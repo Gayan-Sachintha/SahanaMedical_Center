@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+    
+<?php include 'includes/head.php'; ?>
+<?php
+
+if(isset($_GET['employee'])){
+    $employeeID = $_GET['employee'];
+} else {
+    redirect("employees.php?code=8");
+}
+
+if(isset($_POST['updateemployee'])){
+    $firstname = postData('firstname');
+    $lastname = postData('lastname');
+    $username = postData('username');
+    $password = postData('password');
+    $address = postData('address');
+    $nic = postData('nic');
+    $mobile = postData('mobile');
+
+    if(empty($password)){
+        $password = getStaffData($employeeID, "password");
+    } else {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    $sql = "UPDATE
+            `staff`
+            SET
+                `username` = '$username',
+                `first_name` = '$firstname',
+                `last_name` = '$lastname',
+                `password` = '$password',
+                `mobile` = '$mobile',
+                `address` = '$address',
+                `nic` = '$nic'
+            WHERE id = $employeeID";
+
+    $result = mysqli_query(db(), $sql);
+    if($result){
+        redirect("view-employee.php?employee=$employeeID&code=12");
+    } else {
+        redirect("view-employee.php?code=69");
+    }
+
+}
+?>
+    <body data-sidebar="dark" data-layout-mode="light">
+
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            
+        <?php include 'includes/topbar.php'; ?>
+        <?php include 'includes/sidebar.php'; ?>
+            
+
+            
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+            <div class="page-content">
+                    <div class="container-fluid">
+
+                
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <h4 class="card-title">View/Update employee (ID: <?=getStaffData($employeeID, "id");?>)</h4>
+                                        <form action="view-employee.php?employee=<?=$employeeID;?>" method="post">
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee First Name</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="firstname" value="<?=getStaffData($employeeID, "first_name");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee last Name</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="lastname" value="<?=getStaffData($employeeID, "last_name");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee Email / Username (Both are same)</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="username" value="<?=getStaffData($employeeID, "username");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee Password</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="password" id="example-text-input">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee Address</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="address" value="<?=getStaffData($employeeID, "address");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee NIC</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="nic" value="<?=getStaffData($employeeID, "nic");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="example-text-input" class="col-md-2 col-form-label">Employee Mobile</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" type="text" name="mobile" value="<?=getStaffData($employeeID, "mobile");?>" id="example-text-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <div class="col-md-10">
+                                            <button type="submit" name="updateemployee" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-check-double label-icon"></i> Update employee</button>
+                                            </div>
+                                        </div>
+                                        
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+
+                    </div> <!-- container-fluid -->
+                </div>
+
+                
+
+                
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <?php include 'includes/footer.php'; ?>
+
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+        <?php include 'includes/js.php'; ?>
+
+        
+    </body>
+
+
+</html>
