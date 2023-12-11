@@ -56,6 +56,6 @@ Access the project in a web browser
 
 ## License
 
-
+**This project is licensed under the :** [MIT License](https://choosealicense.com/licenses/mit/)
 
 👩‍⚕️ Your health, our commitment! 👨‍⚕️
